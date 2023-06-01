@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProductForm({
   _id,
@@ -13,6 +13,8 @@ export default function ProductForm({
   const [description, setDescription] = useState(existDescription || "");
   const [price, setPrice] = useState(existPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
+  const [categories, setCategories] = useState("");
+
   const router = useRouter();
 
   async function createProduct(ev) {
@@ -34,6 +36,17 @@ export default function ProductForm({
     router.push("/products");
   }
 
+  //for fetching data
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  function fetchCategories() {
+    axios.get("/api/categories").then((result) => {
+      setCategories(result.data);
+    });
+  }
+
   // async function uploadImages(ev) {
   //   const files = ev.target?.files;
   //   if (files?.length > 0) {
@@ -52,6 +65,15 @@ export default function ProductForm({
         value={title}
         onChange={(ev) => setTitle(ev.target.value)}
       />
+      <label>Category</label>
+      <select className="mb-0">
+        <option value="">No parent category</option>
+        {categories.length > 0 &&
+          categories.map((category) => (
+            <option value={category._id}>{category.name}</option>
+          ))}
+      </select>
+
       <label>Photos</label>
       <div className="mb-2 ">
         <label className="w-24 h-24 cursor-pointer text-center flex items-center justify-center text-sm gap-1 text-gray-600 rounded-lg bg-gray-200">
@@ -70,7 +92,7 @@ export default function ProductForm({
             />
           </svg>
           <div>Upload</div>
-          <input type="file" className="hidden"  />
+          <input type="file" className="hidden" />
         </label>
         {!images?.length && (
           <div className="mt-2">No Photos in this product</div>
