@@ -101,7 +101,7 @@ import { useEffect, useState } from "react";
                     Edit
                   </button>
                   <button
-                    className="btn-primary mr-1"
+                    className="btn-red mr-1"
                     onClick={() => deleteCategory(category)}
                   >
                    Delete

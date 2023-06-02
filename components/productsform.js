@@ -73,7 +73,6 @@ export default function ProductForm({
             <option value={category._id}>{category.name}</option>
           ))}
       </select>
-
       <label>Photos</label>
       <div className="mb-2 ">
         <label className="w-24 h-24 cursor-pointer text-center flex items-center justify-center text-sm gap-1 text-gray-600 rounded-lg bg-gray-200">
